@@ -8,7 +8,19 @@ import { useRouter } from "next/router";
 //INTERNAL IMPORT
 import { VotingAddress, VotingAddressABI } from "./constants";
 
-const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+const projectId = "2K3NwT1MHfIOBTh2IK6mb5m6QTE";
+const SecretNum = "640d19c9d3aae4accac49c3ea062ce4e";
+
+// const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+
+const auth = "Basic" + Buffer.from(projectId + ":" + SecretNum).toString("base64");
+
+const client = ipfsHttpClient({
+  url: "https://ipfs.infura.io:5001/api/v0",
+  headers:{
+    authorization: auth
+  }
+});
 
 const fetchContract = (signerOrProvider) =>
   new ethers.Contract(VotingAddress, VotingAddressABI, signerOrProvider);
